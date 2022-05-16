@@ -36,7 +36,7 @@ th {
   text-align: left;
 }
 
-input {
+input[type=text] {
   width: 100%;
   padding: 0.3em;
 }
@@ -54,4 +54,23 @@ table input {
 
 table input:hover {
   border-color: #911;
+}
+
+label {
+  display: flex;
+  margin: 0.25em 0;
+  align-items: center;
+}
+label > span {
+  flex: 0;
+  padding-right: 0.5em;
+  white-space: nowrap;
+}
+label > input, label > select {
+  flex: 1;
+}
+
+header {
+  padding: 1em;
+  background: rgba(255, 255, 255, 50%);
 }
