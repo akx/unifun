@@ -45,9 +45,21 @@ function doCapsTransform(s: string, caps: CapsTransform) {
   }
 }
 
-export function doTransform(text: string, spacing: number, caps: CapsTransform) {
+function maybeReverse(s: string, reverse: boolean) {
+  return reverse ? s.split("").reverse().join("") : s;
+}
+
+export function doTransform(
+  text: string,
+  reverse: boolean,
+  spacing: number,
+  caps: CapsTransform,
+) {
   const results: Record<string, string> = {};
-  const trim = addSpacing(doCapsTransform(text.trim(), caps), spacing);
+  const trim = maybeReverse(
+    addSpacing(doCapsTransform(text.trim(), caps), spacing),
+    reverse,
+  );
   if (trim.length) {
     results["No Transform"] = trim;
     for (const name in qaz) {

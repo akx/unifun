@@ -5,9 +5,10 @@ function App() {
   const [text, setText] = React.useState("");
   const [spacing, setSpacing] = React.useState(0);
   const [caps, setCaps] = React.useState<CapsTransform>(CapsTransform.None);
+  const [reverse, setReverse] = React.useState(false);
   const results = React.useMemo(
-    () => doTransform(text, spacing, caps),
-    [text, spacing, caps],
+    () => doTransform(text, reverse, spacing, caps),
+    [text, reverse, spacing, caps],
   );
   return (
     <main>
@@ -26,6 +27,17 @@ function App() {
             value={spacing}
             onChange={(e) => setSpacing(Number(e.target.value))}
           />
+        </label>
+        <label>
+          <span>Reverse</span>
+          <span>
+            <input
+              type="checkbox"
+              checked={reverse}
+              onChange={(e) => setReverse(e.target.checked)}
+            />
+            Reverse input
+          </span>
         </label>
         <label>
           <span>Caps Transform</span>
