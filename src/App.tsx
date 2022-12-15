@@ -4,11 +4,20 @@ import { CapsTransform, doTransform } from "./transform";
 function App() {
   const [text, setText] = React.useState("");
   const [spacing, setSpacing] = React.useState(0);
+  const [repeat, setRepeat] = React.useState(1);
   const [caps, setCaps] = React.useState<CapsTransform>(CapsTransform.None);
   const [reverse, setReverse] = React.useState(false);
+  const [collapse, setCollapse] = React.useState(false);
   const results = React.useMemo(
-    () => doTransform(text, reverse, spacing, caps),
-    [text, reverse, spacing, caps],
+    () =>
+      doTransform(text, {
+        collapse,
+        reverse,
+        spacing,
+        repeat,
+        caps,
+      }),
+    [text, collapse, reverse, spacing, repeat, caps],
   );
   return (
     <main>
@@ -19,27 +28,49 @@ function App() {
           value={text}
           onChange={(e) => setText(e.target.value)}
         />
-        <label>
-          <span>Spaces between letters</span>
-          <input
-            type="number"
-            min={0}
-            value={spacing}
-            onChange={(e) => setSpacing(Number(e.target.value))}
-          />
-        </label>
-        <label>
-          <span>Reverse</span>
-          <span>
+        <div className="row">
+          <span>Repeat and space</span>
+          <label style={{ flex: 1 }}>
+            <span>Repeat letters</span>
             <input
-              type="checkbox"
-              checked={reverse}
-              onChange={(e) => setReverse(e.target.checked)}
+              type="number"
+              min={1}
+              value={repeat}
+              onChange={(e) => setRepeat(Number(e.target.value))}
             />
-            Reverse input
-          </span>
-        </label>
-        <label>
+          </label>
+          <label style={{ flex: 1 }}>
+            <span>Spaces between letters</span>
+            <input
+              type="number"
+              min={0}
+              value={spacing}
+              onChange={(e) => setSpacing(Number(e.target.value))}
+            />
+          </label>
+        </div>
+        <div className="row">
+          <span>This and that</span>
+          <div>
+            <label>
+              <input
+                type="checkbox"
+                checked={reverse}
+                onChange={(e) => setReverse(e.target.checked)}
+              />
+              Reverse input
+            </label>
+            <label>
+              <input
+                type="checkbox"
+                checked={collapse}
+                onChange={(e) => setCollapse(e.target.checked)}
+              />
+              Collapse spaces
+            </label>
+          </div>
+        </div>
+        <label className="row">
           <span>Caps Transform</span>
           <div style={{ display: "flex", flexWrap: "wrap" }}>
             {Object.values(CapsTransform).map((t) => (

@@ -49,15 +49,37 @@ function maybeReverse(s: string, reverse: boolean) {
   return reverse ? s.split("").reverse().join("") : s;
 }
 
+function addRepeat(s: string, repeat: number) {
+  return Array.from(s)
+    .map((c) => c.repeat(repeat))
+    .join("");
+}
+
+interface TransformParams {
+  caps: CapsTransform;
+  collapse: boolean;
+  repeat: number;
+  reverse: boolean;
+  spacing: number;
+}
+
+function maybeCollapse(s: string, collapse: boolean) {
+  return collapse ? s.replace(/\s+/g, " ") : s;
+}
+
 export function doTransform(
   text: string,
-  reverse: boolean,
-  spacing: number,
-  caps: CapsTransform,
+  { reverse, collapse, spacing, repeat, caps }: TransformParams,
 ) {
   const results: Record<string, string> = {};
   const trim = maybeReverse(
-    addSpacing(doCapsTransform(text.trim(), caps), spacing),
+    addSpacing(
+      maybeCollapse(
+        doCapsTransform(addRepeat(text.trim(), repeat), caps),
+        collapse,
+      ),
+      spacing,
+    ),
     reverse,
   );
   if (trim.length) {

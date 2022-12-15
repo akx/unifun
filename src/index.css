@@ -61,14 +61,19 @@ table input:hover {
   border-color: #911;
 }
 
-label {
+.row {
   display: flex;
-  margin: 0.25em 0;
+  margin: 0.5em 0;
   align-items: center;
 }
 
-label > span {
+.row > span {
   flex: 0;
+  font-weight: bold;
+}
+
+.row > span,
+label > span {
   padding-right: 0.5em;
   white-space: nowrap;
 }
