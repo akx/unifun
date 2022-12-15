@@ -2,12 +2,12 @@ import React from "react";
 import qaz from "./gen/qazwtf";
 
 enum CapsTransform {
-  None = "none",
-  Upper = "upper",
-  Lower = "lower",
-  Invert = "invert",
-  Alternate1 = "alternate1",
-  Alternate2 = "alternate2",
+  None = "None",
+  Upper = "Upper",
+  Lower = "Lower",
+  Invert = "Invert",
+  Alternate1 = "Alternate 1",
+  Alternate2 = "Alternate 2",
 }
 
 function transform(s: string, mapping: Map<number, number>) {
@@ -86,17 +86,20 @@ function App() {
         </label>
         <label>
           <span>Caps Transform</span>
-          <select
-            value={caps}
-            onChange={(e) => setCaps(e.target.value as CapsTransform)}
-          >
-            <option value={CapsTransform.None}>None</option>
-            <option value={CapsTransform.Upper}>Upper</option>
-            <option value={CapsTransform.Lower}>Lower</option>
-            <option value={CapsTransform.Invert}>Invert</option>
-            <option value={CapsTransform.Alternate1}>Alternate 1</option>
-            <option value={CapsTransform.Alternate2}>Alternate 2</option>
-          </select>
+          <div style={{ display: "flex", flexWrap: "wrap" }}>
+            {Object.values(CapsTransform).map((t) => (
+              <label key={t}>
+                <input
+                  type="radio"
+                  name="caps-transform"
+                  value={t}
+                  checked={caps === t}
+                  onChange={() => setCaps(t)}
+                />
+                {t}
+              </label>
+            ))}
+          </div>
         </label>
       </header>
       <table>
