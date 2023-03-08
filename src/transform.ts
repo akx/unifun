@@ -18,8 +18,8 @@ function mappingTransform(s: string, mapping: Map<number, number>) {
     .join("");
 }
 
-function addSpacing(text: string, spacing: number) {
-  return Array.from(text).join(" ".repeat(spacing));
+function addSpacing(text: string, spacing: number, spacer = " ") {
+  return Array.from(text).join(spacer.repeat(spacing));
 }
 
 function doCapsTransform(s: string, caps: CapsTransform) {
@@ -61,6 +61,7 @@ interface TransformParams {
   repeat: number;
   reverse: boolean;
   spacing: number;
+  spacer: string;
 }
 
 function maybeCollapse(s: string, collapse: boolean) {
@@ -69,7 +70,7 @@ function maybeCollapse(s: string, collapse: boolean) {
 
 export function doTransform(
   text: string,
-  { reverse, collapse, spacing, repeat, caps }: TransformParams,
+  { reverse, collapse, spacing, spacer, repeat, caps }: TransformParams,
 ) {
   const results: Record<string, string> = {};
   const trim = maybeReverse(
@@ -79,6 +80,7 @@ export function doTransform(
         collapse,
       ),
       spacing,
+      spacer,
     ),
     reverse,
   );

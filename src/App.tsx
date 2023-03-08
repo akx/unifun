@@ -4,6 +4,7 @@ import { CapsTransform, doTransform } from "./transform";
 function App() {
   const [text, setText] = React.useState("");
   const [spacing, setSpacing] = React.useState(0);
+  const [spacer, setSpacer] = React.useState(" ");
   const [repeat, setRepeat] = React.useState(1);
   const [caps, setCaps] = React.useState<CapsTransform>(CapsTransform.None);
   const [reverse, setReverse] = React.useState(false);
@@ -14,10 +15,11 @@ function App() {
         collapse,
         reverse,
         spacing,
+        spacer,
         repeat,
         caps,
       }),
-    [text, collapse, reverse, spacing, repeat, caps],
+    [text, collapse, reverse, spacing, spacer, repeat, caps],
   );
   return (
     <main>
@@ -29,24 +31,30 @@ function App() {
           onChange={(e) => setText(e.target.value)}
         />
         <div className="row">
-          <span>Repeat and space</span>
+          <span>Repeat letters</span>
           <label style={{ flex: 1 }}>
-            <span>Repeat letters</span>
             <input
               type="number"
               min={1}
               value={repeat}
               onChange={(e) => setRepeat(Number(e.target.value))}
             />
+            <span> times</span>
           </label>
+        </div>
+        <div className="row">
+          <span>Pad letters</span>
           <label style={{ flex: 1 }}>
-            <span>Spaces between letters</span>
+            <span>Put</span>
             <input
               type="number"
               min={0}
               value={spacing}
               onChange={(e) => setSpacing(Number(e.target.value))}
             />
+            <span> copies of the string</span>
+            <input value={spacer} onChange={(e) => setSpacer(e.target.value)} />
+            <span> between letters</span>
           </label>
         </div>
         <div className="row">
