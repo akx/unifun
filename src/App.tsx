@@ -41,6 +41,7 @@ function App() {
     return results;
   }, [mixerMode, transformed, mixerRatios]);
   const keys = new Set(Object.keys(results)).union(new Set(Object.keys(qazwtf)));
+  const visibleKeys = [...keys].filter((name) => mixerMode || results[name]);
   return (
     <main>
       <header>
@@ -156,7 +157,7 @@ function App() {
           </thead>
         ) : null}
         <tbody>
-          {[...keys].map((name) => (
+          {visibleKeys.map((name) => (
             <tr key={name}>
               <th scope="row">{name}</th>
               <td>{results[name] && <input type="text" readOnly value={results[name]} />}</td>
