@@ -76,10 +76,7 @@ export function doTransform(
   const results: Record<string, string> = {};
   const trim = maybeReverse(
     addSpacing(
-      maybeCollapse(
-        doCapsTransform(addRepeat(text.trim(), repeat), caps),
-        collapse,
-      ),
+      maybeCollapse(doCapsTransform(addRepeat(text.trim(), repeat), caps), collapse),
       spacing,
       spacer,
     ),

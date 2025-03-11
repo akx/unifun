@@ -109,9 +109,8 @@ function App() {
         </tbody>
       </table>
       <footer>
-        React frontend via: <a href="https://github.com/akx">@akx</a> &middot;
-        Mappings via: <a href="https://qaz.wtf/u/">A Unicode Toy</a> &copy;
-        2009-2021 Eli the Bearded
+        React frontend via: <a href="https://github.com/akx">@akx</a> &middot; Mappings via:{" "}
+        <a href="https://qaz.wtf/u/">A Unicode Toy</a> &copy; 2009-2021 Eli the Bearded
       </footer>
     </main>
   );

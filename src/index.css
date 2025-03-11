@@ -5,9 +5,9 @@
 body,
 input,
 select {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell",
+    "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   font-size: 1rem;
 }
 
@@ -44,6 +44,11 @@ select {
 
 input[type="text"] {
   width: 100%;
+}
+
+input[type="number"] {
+  width: 5em;
+  text-align: center;
 }
 
 footer {
@@ -84,6 +89,6 @@ label > select {
 }
 
 header {
-  padding: 1em;
+  padding: 1em 0;
   background: rgba(255, 255, 255, 50%);
 }
