@@ -43,65 +43,64 @@ function App() {
   const keys = new Set(Object.keys(results)).union(new Set(Object.keys(qazwtf)));
   const visibleKeys = [...keys].filter((name) => mixerMode || results[name]);
   return (
-    <main>
-      <header>
+    <main className="border container m-2 mx-auto bg-white">
+      <header className="border-b p-2 flex flex-col">
         <input
+          className="border w-full border-gray-400 p-1"
           type="text"
           placeholder="Enter text here..."
           value={text}
           onChange={(e) => setText(e.target.value)}
         />
-        <div className="row">
-          <span>Repeat letters</span>
-          <label style={{ flex: 1 }}>
+        <label>
+          Repeat letters
+          <input
+            type="number"
+            className="inline w-16 text-center border-b"
+            min={1}
+            value={repeat}
+            onChange={(e) => setRepeat(Number(e.target.value))}
+          />
+          <span> times</span>
+        </label>
+        <label>
+          <span>Pad with </span>
+          <input
+            type="number"
+            className="inline w-16 text-center border-b"
+            min={0}
+            value={spacing}
+            onChange={(e) => setSpacing(Number(e.target.value))}
+          />
+          <span> copies of the string </span>
+          <input
+            value={spacer}
+            className="inline border-b"
+            onChange={(e) => setSpacer(e.target.value)}
+          />
+          <span> between letters</span>
+        </label>
+        <div className="flex gap-2">
+          <label>
             <input
-              type="number"
-              min={1}
-              value={repeat}
-              onChange={(e) => setRepeat(Number(e.target.value))}
-            />
-            <span> times</span>
+              type="checkbox"
+              checked={reverse}
+              onChange={(e) => setReverse(e.target.checked)}
+            />{" "}
+            Reverse input
           </label>
-        </div>
-        <div className="row">
-          <span>Pad letters</span>
-          <label style={{ flex: 1 }}>
-            <span>Put</span>
+          <label>
             <input
-              type="number"
-              min={0}
-              value={spacing}
-              onChange={(e) => setSpacing(Number(e.target.value))}
-            />
-            <span> copies of the string</span>
-            <input value={spacer} onChange={(e) => setSpacer(e.target.value)} />
-            <span> between letters</span>
+              type="checkbox"
+              checked={collapse}
+              onChange={(e) => setCollapse(e.target.checked)}
+            />{" "}
+            Collapse spaces
           </label>
-        </div>
-        <div className="row">
-          <span>This and that</span>
-          <div>
-            <label>
-              <input
-                type="checkbox"
-                checked={reverse}
-                onChange={(e) => setReverse(e.target.checked)}
-              />
-              Reverse input
-            </label>
-            <label>
-              <input
-                type="checkbox"
-                checked={collapse}
-                onChange={(e) => setCollapse(e.target.checked)}
-              />
-              Collapse spaces
-            </label>
-          </div>
         </div>
         <label className="row">
-          <span>Caps Transform</span>
-          <div style={{ display: "flex", flexWrap: "wrap" }}>
+          <span>Caps:</span>
+          <div className="inline-flex flex-wrap ps-2 gap-2">
             {Object.values(CapsTransform).map((t) => (
               <label key={t}>
                 <input
@@ -110,81 +109,97 @@ function App() {
                   value={t}
                   checked={caps === t}
                   onChange={() => setCaps(t)}
-                />
+                />{" "}
                 {t}
               </label>
             ))}
           </div>
         </label>
-        <div className="row">
-          <span>Mapping Mode</span>
-          <div>
-            <label>
-              <input
-                type="checkbox"
-                checked={mixerMode}
-                onChange={(e) => setMixerMode(e.target.checked)}
-              />
-              Mixer mode
-            </label>
-          </div>
-        </div>
+        <label>
+          <input
+            type="checkbox"
+            checked={mixerMode}
+            onChange={(e) => setMixerMode(e.target.checked)}
+          />{" "}
+          Mixer mode
+        </label>
       </header>
-      <table>
-        {mixerMode ? (
-          <thead>
-            <tr>
-              <td></td>
-              <td></td>
-              <th style={{ width: "10em" }}>
-                <div style={{ display: "flex", gap: "3px" }}>
-                  <button
-                    type="button"
-                    onClick={() =>
-                      setMixerRatios(
-                        Object.fromEntries([...keys].map((name) => [name, Math.random()])),
-                      )
-                    }
-                  >
-                    Rnd
-                  </button>
-                  <button type="button" onClick={() => setMixerRatios({})}>
-                    Zero
-                  </button>
-                </div>
-              </th>
-            </tr>
-          </thead>
-        ) : null}
-        <tbody>
-          {visibleKeys.map((name) => (
-            <tr key={name}>
-              <th scope="row">{name}</th>
-              <td>{results[name] && <input type="text" readOnly value={results[name]} />}</td>
-              {mixerMode && name !== "Mixed" ? (
+      <div className="p-2">
+        <table className="w-full">
+          {mixerMode ? (
+            <thead>
+              <tr>
+                <td></td>
+                <td></td>
+                <th className="w-40">
+                  <div className="flex gap-1 *:grow">
+                    <button
+                      className="border border-gray-400 hover:border-black"
+                      type="button"
+                      onClick={() =>
+                        setMixerRatios(
+                          Object.fromEntries([...keys].map((name) => [name, Math.random()])),
+                        )
+                      }
+                    >
+                      Rnd
+                    </button>
+                    <button
+                      className="border border-gray-400 hover:border-black"
+                      type="button"
+                      onClick={() => setMixerRatios({})}
+                    >
+                      Zero
+                    </button>
+                  </div>
+                </th>
+              </tr>
+            </thead>
+          ) : null}
+          <tbody>
+            {visibleKeys.map((name) => (
+              <tr key={name}>
+                <th scope="row" className="text-start w-64">
+                  {name}
+                </th>
                 <td>
-                  <input
-                    type="range"
-                    min={0}
-                    max={1}
-                    step={0.01}
-                    value={mixerRatios[name] || 0}
-                    onChange={(e) =>
-                      setMixerRatios((mr) => ({
-                        ...mr,
-                        [name]: Number(e.target.value),
-                      }))
-                    }
-                  />
+                  {results[name] && (
+                    <input type="text" readOnly className="w-full" value={results[name]} />
+                  )}
                 </td>
-              ) : null}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <footer>
-        React frontend via: <a href="https://github.com/akx">@akx</a> &middot; Mappings via:{" "}
-        <a href="https://qaz.wtf/u/">A Unicode Toy</a> &copy; 2009-2021 Eli the Bearded
+                {mixerMode && name !== "Mixed" ? (
+                  <td>
+                    <input
+                      type="range"
+                      min={0}
+                      max={1}
+                      step={0.01}
+                      className="w-full"
+                      value={mixerRatios[name] || 0}
+                      onChange={(e) =>
+                        setMixerRatios((mr) => ({
+                          ...mr,
+                          [name]: Number(e.target.value),
+                        }))
+                      }
+                    />
+                  </td>
+                ) : null}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <footer className="text-center p-2">
+        React frontend via:{" "}
+        <a href="https://github.com/akx" className="text-red-600">
+          @akx
+        </a>{" "}
+        &middot; Mappings via:{" "}
+        <a href="https://qaz.wtf/u/" className="text-red-600">
+          A Unicode Toy
+        </a>{" "}
+        &copy; 2009-2021 Eli the Bearded
       </footer>
     </main>
   );
