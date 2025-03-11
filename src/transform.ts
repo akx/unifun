@@ -36,12 +36,13 @@ function doCapsTransform(s: string, caps: CapsTransform) {
         .map((c) => (c.toUpperCase() === c ? c.toLowerCase() : c.toUpperCase()))
         .join("");
     case CapsTransform.Alternate1:
-    case CapsTransform.Alternate2:
+    case CapsTransform.Alternate2: {
       const a = caps === CapsTransform.Alternate2 ? 1 : 0;
       return s
         .split("")
         .map((c, i) => ((i & 1) === a ? c.toUpperCase() : c.toLowerCase()))
         .join("");
+    }
   }
 }
 
