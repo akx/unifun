@@ -42,7 +42,8 @@ select {
   padding: 0.3em;
 }
 
-input[type="text"] {
+input[type="text"],
+input[type="range"] {
   width: 100%;
 }
 
@@ -91,4 +92,12 @@ label > select {
 header {
   padding: 1em 0;
   background: rgba(255, 255, 255, 50%);
+}
+
+th button {
+  font: inherit;
+  border: 1px solid #000;
+  padding: 0.3em;
+  background: rgba(255, 255, 255, 50%);
+  flex-grow: 1;
 }

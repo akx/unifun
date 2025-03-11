@@ -1,15 +1,20 @@
 import React from "react";
-import { CapsTransform, doTransform } from "./transform";
+import { CapsTransform, doMappingTransforms, doMixerTransform, doTransform } from "./transform";
+import qazwtf from "./gen/qazwtf";
 
 function App() {
-  const [text, setText] = React.useState("");
+  const [text, setText] = React.useState(() =>
+    window.location.hostname.startsWith("localhost") ? "the walls are closing in" : "",
+  );
   const [spacing, setSpacing] = React.useState(0);
   const [spacer, setSpacer] = React.useState(" ");
   const [repeat, setRepeat] = React.useState(1);
   const [caps, setCaps] = React.useState<CapsTransform>(CapsTransform.None);
   const [reverse, setReverse] = React.useState(false);
   const [collapse, setCollapse] = React.useState(false);
-  const results = React.useMemo(
+  const [mixerMode, setMixerMode] = React.useState(false);
+  const [mixerRatios, setMixerRatios] = React.useState<Record<string, number>>({});
+  const transformed = React.useMemo(
     () =>
       doTransform(text, {
         collapse,
@@ -21,6 +26,21 @@ function App() {
       }),
     [text, collapse, reverse, spacing, spacer, repeat, caps],
   );
+  const results = React.useMemo(() => {
+    let results = doMappingTransforms(transformed);
+    if (mixerMode) {
+      try {
+        results = {
+          Mixed: doMixerTransform(transformed, mixerRatios),
+          ...results,
+        };
+      } catch {
+        // vituiks meni, evm
+      }
+    }
+    return results;
+  }, [mixerMode, transformed, mixerRatios]);
+  const keys = new Set(Object.keys(results)).union(new Set(Object.keys(qazwtf)));
   return (
     <main>
       <header>
@@ -95,15 +115,68 @@ function App() {
             ))}
           </div>
         </label>
+        <div className="row">
+          <span>Mapping Mode</span>
+          <div>
+            <label>
+              <input
+                type="checkbox"
+                checked={mixerMode}
+                onChange={(e) => setMixerMode(e.target.checked)}
+              />
+              Mixer mode
+            </label>
+          </div>
+        </div>
       </header>
       <table>
+        {mixerMode ? (
+          <thead>
+            <tr>
+              <td></td>
+              <td></td>
+              <th style={{ width: "10em" }}>
+                <div style={{ display: "flex", gap: "3px" }}>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setMixerRatios(
+                        Object.fromEntries([...keys].map((name) => [name, Math.random()])),
+                      )
+                    }
+                  >
+                    Rnd
+                  </button>
+                  <button type="button" onClick={() => setMixerRatios({})}>
+                    Zero
+                  </button>
+                </div>
+              </th>
+            </tr>
+          </thead>
+        ) : null}
         <tbody>
-          {Object.entries(results).map(([name, text]) => (
+          {[...keys].map((name) => (
             <tr key={name}>
               <th scope="row">{name}</th>
-              <td>
-                <input type="text" readOnly value={text} />
-              </td>
+              <td>{results[name] && <input type="text" readOnly value={results[name]} />}</td>
+              {mixerMode && name !== "Mixed" ? (
+                <td>
+                  <input
+                    type="range"
+                    min={0}
+                    max={1}
+                    step={0.01}
+                    value={mixerRatios[name] || 0}
+                    onChange={(e) =>
+                      setMixerRatios((mr) => ({
+                        ...mr,
+                        [name]: Number(e.target.value),
+                      }))
+                    }
+                  />
+                </td>
+              ) : null}
             </tr>
           ))}
         </tbody>
